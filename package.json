@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "db-push": "npx prisma db push",
     "post-update": "echo \"codesandbox preview only, need an update\" && pnpm update --latest"
   },
   "dependencies": {
@@ -16,9 +17,12 @@
     "@mui/icons-material": "^6.1.9",
     "@mui/material": "latest",
     "@mui/material-nextjs": "latest",
+    "@prisma/client": "^5.22.0",
     "next": "latest",
     "react": "latest",
     "react-dom": "latest",
+    "sequelize": "^6.37.5",
+    "sqlite3": "^5.1.7",
     "vazirmatn": "^33.0.3"
   },
   "devDependencies": {
@@ -27,6 +31,7 @@
     "@types/react-dom": "latest",
     "eslint": "latest",
     "eslint-config-next": "latest",
+    "prisma": "^5.22.0",
     "typescript": "latest"
   }
 }
