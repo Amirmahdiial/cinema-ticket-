@@ -7,8 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "db-push": "npx prisma db push",
-    "post-update": "echo \"codesandbox preview only, need an update\" && pnpm update --latest"
+    "post-update": "echo \"codesandbox preview only, need an update\" && pnpm update --latest",
+
+    "prisma-studio": "npx prisma studio",
+    "db-push": "npx prisma db push"
   },
   "dependencies": {
     "@emotion/cache": "latest",

@@ -39,6 +39,7 @@ To learn more about this example:
 
 ## What's next?
 
+Prisma https://vercel.com/guides/nextjs-prisma-postgres
 <!-- #default-branch-switch -->
 
 You now have a working example project.
