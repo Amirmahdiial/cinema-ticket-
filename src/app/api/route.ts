@@ -8,7 +8,7 @@ const moviesService = new MoviesService();
 export async function GET() {
     return NextResponse.json(
         {
-            "response": "sucess",
+            "response": "success",
             "data": await moviesService.getMovies()
         }
     )
