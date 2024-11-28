@@ -40,7 +40,7 @@ const Cards: FC<Ownprops> = (data) => {
             position: "relative",
             backgroundColor: "rgba(0,0,0,0.5)",
           }}
-          image="/Images/e478466bd7526046868013a1f7d51eb6.webp"
+          image={data.data.background_image}
           alt="Live from space album cover"
         />
         <Box
@@ -54,7 +54,7 @@ const Cards: FC<Ownprops> = (data) => {
         <CardMedia
           component="img"
           sx={{ width: "24%", marginLeft: "20px", position: "absolute" }}
-          image="/Images/f46a31eb308bacddd10a31795b8f7735.webp"
+          image={data.data.actor_image}
           alt="Live from space album cover"
         />
         <CardMedia
@@ -68,7 +68,7 @@ const Cards: FC<Ownprops> = (data) => {
             top: "5%",
             borderRadius: "20px",
           }}
-          image="/Images/51e6de901eb9ec02e22e24f7f99c877d.webp"
+          image={data.data.card_image}
           alt="Live from space album cover"
         />
         <Box
@@ -121,7 +121,7 @@ const Cards: FC<Ownprops> = (data) => {
               padding: "5px",
             }}
           >
-            {data.data.rating} <FavoriteIcon sx={{ scale: ".8" }} />
+            {data.data.rate} <FavoriteIcon sx={{ scale: ".8" }} />
           </Typography>
           <Typography
             component="div"

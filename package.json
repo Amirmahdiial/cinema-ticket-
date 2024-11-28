@@ -8,7 +8,6 @@
     "start": "next start",
     "lint": "next lint",
     "post-update": "echo \"codesandbox preview only, need an update\" && pnpm update --latest",
-
     "prisma-studio": "npx prisma studio",
     "db-push": "npx prisma db push"
   },
@@ -20,6 +19,7 @@
     "@mui/material": "latest",
     "@mui/material-nextjs": "latest",
     "@prisma/client": "^5.22.0",
+    "axios": "^1.7.8",
     "next": "latest",
     "react": "latest",
     "react-dom": "latest",
