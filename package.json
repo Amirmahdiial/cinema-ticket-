@@ -11,6 +11,9 @@
     "prisma-studio": "npx prisma studio",
     "db-push": "npx prisma db push"
   },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
   "dependencies": {
     "@emotion/cache": "latest",
     "@emotion/react": "latest",
@@ -34,6 +37,7 @@
     "eslint": "latest",
     "eslint-config-next": "latest",
     "prisma": "^5.22.0",
+    "ts-node": "^10.9.2",
     "typescript": "latest"
   }
 }

@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,15 +7,14 @@ datasource db {
   url      = "file:./db.sqlite"
 }
 
-
-model Movie { 
-  id                String     @default(cuid()) @id
-  title             String
-  description       String
-  director          String
-  genre             String
-  rate              String
-  background_image  String
-  actor_image       String
-  card_image        String
+model Movie {
+  id               String @id @default(cuid())
+  title            String
+  description      String
+  director         String
+  genre            String
+  rate             String
+  background_image String
+  actor_image      String
+  card_image       String
 }
