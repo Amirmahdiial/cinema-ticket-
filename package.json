@@ -9,9 +9,7 @@
     "lint": "next lint",
     "post-update": "echo \"codesandbox preview only, need an update\" && pnpm update --latest",
     "prisma-studio": "npx prisma studio",
-    "db-push": "npx prisma db push"
-  },
-  "prisma": {
+    "db-push": "npx prisma db push",
     "seed": "ts-node prisma/seed.ts"
   },
   "dependencies": {
@@ -38,6 +36,6 @@
     "eslint-config-next": "latest",
     "prisma": "^5.22.0",
     "ts-node": "^10.9.2",
-    "typescript": "latest"
+    "typescript": "^5.7.2"
   }
 }
