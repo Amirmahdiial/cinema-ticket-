@@ -13,12 +13,13 @@
     "@emotion/cache": "latest",
     "@emotion/react": "latest",
     "@emotion/styled": "latest",
-    "@mui/icons-material": "latest",
+    "@mui/icons-material": "^6.1.9",
     "@mui/material": "latest",
     "@mui/material-nextjs": "latest",
     "next": "latest",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "vazirmatn": "^33.0.3"
   },
   "devDependencies": {
     "@types/node": "latest",
