@@ -1,8 +1,51 @@
+'use client';
 import Header from "@/components/Header";
 import { Box, Container, Typography, CardMedia, Button } from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
+
 export default function ticket() {
+  const[Seats , setSeats] = useState([]);
+
+  const getSeats = async() => {
+
+    let data: object = {
+      "seats": {
+        "max-columns": 3,
+        "max-rows": 5,
+        "rows": [
+          [
+            "reserved",
+            "reservable",
+            "reserved",
+            "reserved",
+            "void",
+          ],
+          [
+            "reservable",
+            "void",
+            "reservable",
+            "reserved",
+            "reservable",
+          ],
+          [
+            "*reserved",
+          ],
+        ]
+      }
+    }
+
+
+    setSeats(data.seats.rows)
+
+  }
+  useEffect(() =>{
+    getSeats();
+  }, [] )
+
+
+
   return (
     <>
       <link
@@ -10,6 +53,7 @@ export default function ticket() {
         rel="stylesheet"
         type="text/css"
       />
+{/*       
       <Box
         sx={{
           display: "flex",
@@ -59,6 +103,7 @@ export default function ticket() {
           سینما تیکت
         </Button>
       </Box>
+       */}
       <Container
         maxWidth="xl"
         sx={{
@@ -99,55 +144,43 @@ export default function ticket() {
                 marginTop: "10px",
               }}
             >
-              <Box
-                sx={{
-                  backgroundColor: "#bcc7d6",
-                  height: "30px",
-                  width: "30px",
-                  borderRadius: "100%",
-                  cursor: "pointer",
-                }}
-              ></Box>
-              <Box
-                sx={{
-                  backgroundColor: "#bcc7d6",
-                  height: "30px",
-                  width: "30px",
-                  borderRadius: "100%",
-                  cursor: "pointer",
-                }}
-              ></Box>
-              <Box
-                sx={{
-                  backgroundColor: "#bcc7d6",
-                  height: "30px",
-                  width: "30px",
-                  borderRadius: "100%",
-                  cursor: "pointer",
-                }}
-              ></Box>
-              <Box
-                sx={{
-                  backgroundColor: "#bcc7d6",
-                  height: "30px",
-                  width: "30px",
-                  borderRadius: "100%",
-                  cursor: "pointer",
-                }}
-              ></Box>
-              <Box
-                sx={{
-                  backgroundColor: "#bcc7d6",
-                  height: "30px",
-                  width: "30px",
-                  borderRadius: "100%",
-                  cursor: "pointer",
-                }}
-              ></Box>
+
+
+
+
+
+
+                {
+                  Seats.map((item ,index) =>(
+                    
+                    <Box
+                    sx={{
+                      backgroundColor: "#bcc7d6",
+                      height: "30px",
+                      width: "30px",
+                      borderRadius: "100%",
+                      cursor: "pointer",
+                    }}
+                    ></Box>
+                  ))
+                }
+
+
+
+
+
+
+
             </Box>
           </Box>
         </Box>
       </Container>
+
+
+
+
+
+{/* 
       <Box sx={{ position: "fixed", bottom: "0", backgroundColor: "#2a2a35" }}>
         <Box
           sx={{
@@ -260,6 +293,7 @@ export default function ticket() {
           </Box>
         </Box>
       </Box>
+       */}
     </>
   );
 }
