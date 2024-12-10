@@ -1,50 +1,34 @@
-'use client';
-import Header from "@/components/Header";
+"use client";
+
 import { Box, Container, Typography, CardMedia, Button } from "@mui/material";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+
+import { useState } from "react";
+import Seat from "@/components/seat";
+import { ISeat } from "@/lib/types/types";
 
 export default function ticket() {
-  const[Seats , setSeats] = useState([]);
+  const [seats, setSeats] = useState<ISeat[]>([
+    { colNumber: "1", rowNumber: "1", price: 200, isReserved: false },
+    { colNumber: "2", rowNumber: "1", price: 200, isReserved: false },
+    { colNumber: "3", rowNumber: "1", price: 200, isReserved: true },
+    { colNumber: "4", rowNumber: "1", price: 200, isReserved: false },
+    { colNumber: "5", rowNumber: "1", price: 200, isReserved: true },
+    { colNumber: "6", rowNumber: "1", price: 200, isReserved: false },
+  ]);
 
-  const getSeats = async() => {
+  const [selectedSeats, setSelectedSeats] = useState<ISeat[]>([]);
 
-    let data: object = {
-      "seats": {
-        "max-columns": 3,
-        "max-rows": 5,
-        "rows": [
-          [
-            "reserved",
-            "reservable",
-            "reserved",
-            "reserved",
-            "void",
-          ],
-          [
-            "reservable",
-            "void",
-            "reservable",
-            "reserved",
-            "reservable",
-          ],
-          [
-            "*reserved",
-          ],
-        ]
-      }
-    }
-
-
-    setSeats(data.seats.rows)
-
+  function addSeatToSelectedSeats(seat: ISeat) {
+    setSelectedSeats([...selectedSeats, seat]);
   }
-  useEffect(() =>{
-    getSeats();
-  }, [] )
 
-
+  function removeSeatFromSelectedSeats(colNumber: string, rowNumber: string) {
+    setSelectedSeats(
+      selectedSeats.filter((s) => {
+        return s.colNumber !== colNumber || s.rowNumber !== rowNumber;
+      }),
+    );
+  }
 
   return (
     <>
@@ -53,7 +37,7 @@ export default function ticket() {
         rel="stylesheet"
         type="text/css"
       />
-{/*       
+
       <Box
         sx={{
           display: "flex",
@@ -103,7 +87,7 @@ export default function ticket() {
           سینما تیکت
         </Button>
       </Box>
-       */}
+
       <Container
         maxWidth="xl"
         sx={{
@@ -135,52 +119,28 @@ export default function ticket() {
               صحنه اجرا
             </Typography>
             <Box
-              gridRow="10"
               sx={{
                 display: "grid",
-                rowGap: "5px",
-                gridTemplateColumns:
-                  "auto auto auto auto auto auto auto auto auto auto auto auto",
-                marginTop: "10px",
+                gridTemplateColumns: "repeat(12, 1fr)",
+                gap: "20px",
+                placeItems: "center",
               }}
             >
-
-
-
-
-
-
-                {
-                  Seats.map((item ,index) =>(
-                    
-                    <Box
-                    sx={{
-                      backgroundColor: "#bcc7d6",
-                      height: "30px",
-                      width: "30px",
-                      borderRadius: "100%",
-                      cursor: "pointer",
-                    }}
-                    ></Box>
-                  ))
-                }
-
-
-
-
-
-
-
+              {seats.map((seat) => (
+                <Seat
+                  isReserved={seat.isReserved}
+                  price={seat.price}
+                  rowNumber={seat.rowNumber}
+                  colNumber={seat.colNumber}
+                  addSeatToSelectedSeats={addSeatToSelectedSeats}
+                  removeSeatFromSelectedSeats={removeSeatFromSelectedSeats}
+                />
+              ))}
             </Box>
           </Box>
         </Box>
       </Container>
 
-
-
-
-
-{/* 
       <Box sx={{ position: "fixed", bottom: "0", backgroundColor: "#2a2a35" }}>
         <Box
           sx={{
@@ -270,7 +230,7 @@ export default function ticket() {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            fontFamily:"Vazirmatn"
+            fontFamily: "Vazirmatn",
           }}
         >
           <Button
@@ -279,21 +239,49 @@ export default function ticket() {
               color: "#ffffff",
               padding: "10px",
               margin: "40px",
-              fontSize:"18px"
+              fontSize: "18px",
             }}
           >
             ثبت صندلی
           </Button>
-          <Box></Box>
-          <Box sx={{display:"flex", alignItems:"center", fontFamily:"Vazirmatn", width:"300px", borderLeft:"2px dashed white"}}>
-            <Typography sx={{fontFamily:"Vazirmatn", color:"white", paddingLeft:"20px"}} >
+          <Box sx={{ display: "flex", alignItems: "center", gap: "20px" }}>
+            {selectedSeats.map((sSeat) => (
+              <span>
+                {sSeat.colNumber} | {sSeat.rowNumber} | {sSeat.price}
+              </span>
+            ))}
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              fontFamily: "Vazirmatn",
+              width: "300px",
+              borderLeft: "2px dashed white",
+            }}
+          >
+            <Typography
+              sx={{
+                fontFamily: "Vazirmatn",
+                color: "white",
+                paddingLeft: "20px",
+              }}
+            >
               باغ کیانوش
             </Typography>
-            <CardMedia sx={{height:"150px", width:"170px", margin:"10px", paddingRight:"50px"}} component="img" image="/Images/1/51e6de901eb9ec02e22e24f7f99c877d.webp" />
+            <CardMedia
+              sx={{
+                height: "150px",
+                width: "170px",
+                margin: "10px",
+                paddingRight: "50px",
+              }}
+              component="img"
+              image="/Images/1/51e6de901eb9ec02e22e24f7f99c877d.webp"
+            />
           </Box>
         </Box>
       </Box>
-       */}
     </>
   );
 }
