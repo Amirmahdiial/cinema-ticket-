@@ -2,6 +2,129 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 async function main() {
+  // Create Movies
+  const movieA = await prisma.movie.create({
+    data: {
+      name: "Movie A",
+      description: "Description for Movie A",
+      director: "Director A",
+      genre: "Action",
+      thumbnail: "thumbnail-a.jpg",
+      coverPhoto: "cover-a.jpg",
+    },
+  });
+
+  const movieB = await prisma.movie.create({
+    data: {
+      name: "Movie B",
+      description: "Description for Movie B",
+      director: "Director B",
+      genre: "Drama",
+      thumbnail: "thumbnail-b.jpg",
+      coverPhoto: "cover-b.jpg",
+    },
+  });
+
+  // Create Saloons
+  const saloonA = await prisma.saloon.create({
+    data: {
+      name: "Saloon A",
+      rows: 10,
+      columns: 12,
+      seats: {
+        create: generateSeats(10, 12, [200, 800]),
+      },
+    },
+  });
+
+  const saloonB = await prisma.saloon.create({
+    data: {
+      name: "Saloon B",
+      rows: 10,
+      columns: 12,
+      seats: {
+        create: generateSeats(10, 12, [200, 800]),
+      },
+    },
+  });
+
+  // Create ShowTimes
+  const showTime1030 = await prisma.showTime.create({
+    data: {
+      time: "10:30 A.M.",
+      movieId: movieA.id,
+      saloonId: saloonB.id,
+    },
+  });
+
+  const showTime1330 = await prisma.showTime.create({
+    data: {
+      time: "13:30 P.M.",
+      movieId: movieB.id,
+      saloonId: saloonA.id,
+    },
+  });
+
+  // Create a User Booking for Movie A in Saloon B at 10:30
+  const booking = await prisma.booking.create({
+    data: {
+      userId: 1,
+      showTimeId: showTime1030.id,
+      createdAt: new Date(),
+    },
+  });
+
+  // Link Seats to the Booking via BookingSeat
+  const seatsToBook = await prisma.seat.findMany({
+    where: {
+      saloonId: saloonB.id,
+      OR: [
+        { row: 1, column: 1 },
+        { row: 1, column: 2 },
+        { row: 1, column: 3 },
+      ],
+    },
+  });
+
+  for (const seat of seatsToBook) {
+    await prisma.bookingSeat.create({
+      data: {
+        bookingId: booking.id,
+        seatId: seat.id,
+      },
+    });
+  }
+
+  console.log("Seeding completed!");
+}
+
+function generateSeats(rows: number, columns: number, prices: number[]) {
+  const seats = [];
+  for (let row = 1; row <= rows; row++) {
+    for (let column = 1; column <= columns; column++) {
+      seats.push({
+        row,
+        column,
+        price: prices[Math.floor(Math.random() * prices.length)],
+      });
+    }
+  }
+  return seats;
+}
+
+main()
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });
+
+/*const { PrismaClient } = require("@prisma/client");
+const prisma = new PrismaClient();
+
+async function main() {
     const movieCards = [
         {
         title: "باغ کیانوش",
@@ -52,3 +175,4 @@ main()
     .finally(async () => {
         await prisma.$disconnect();
     });
+*/
