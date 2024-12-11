@@ -70,6 +70,7 @@ async function main() {
     data: {
       userId: 1,
       showTimeId: showTime1030.id,
+      movieId: movieA.id,
       createdAt: new Date(),
     },
   });
@@ -98,7 +99,12 @@ async function main() {
   console.log("Seeding completed!");
 }
 
-function generateSeats(rows: number, columns: number, prices: number[]) {
+// Helper function to generate seats
+function generateSeats(
+  rows: number,
+  columns: number,
+  prices: number[],
+): { row: number; column: number; price: number }[] {
   const seats = [];
   for (let row = 1; row <= rows; row++) {
     for (let column = 1; column <= columns; column++) {

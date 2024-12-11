@@ -8,70 +8,75 @@ datasource db {
 }
 
 model Movie {
-  id          Int        @id @default(autoincrement())
+  id          Int    @id @default(autoincrement())
   name        String
   description String
   director    String
   genre       String
   thumbnail   String
   coverPhoto  String
-  showTimes   ShowTime[]
-  // TODO: Add actorsImage
+
+  showTimes ShowTime[]
+  Booking   Booking[]
+}
+
+model Saloon {
+  id      Int    @id @default(autoincrement())
+  name    String
+  rows    Int
+  columns Int
+
+  seats     Seat[]
+  showTimes ShowTime[]
 }
 
 model ShowTime {
   id   Int    @id @default(autoincrement())
   time String
 
-  movie   Movie @relation(fields: [movieId], references: [id])
   movieId Int
+  movie   Movie @relation(fields: [movieId], references: [id])
 
-  saloon   Saloon @relation(fields: [saloonId], references: [id])
   saloonId Int
+  saloon   Saloon @relation(fields: [saloonId], references: [id])
 
   bookings Booking[]
 }
 
-model Saloon {
-  id       Int        @id @default(autoincrement())
-  name     String
-  rows     Int
-  columns  Int
-  seats    Seat[]
-  ShowTime ShowTime[]
-}
-
 model Seat {
-  id     Int   @id @default(autoincrement())
+  id     Int @id @default(autoincrement())
   row    Int
   column Int
-  price  Float
+  price  Int
 
-  saloon   Saloon @relation(fields: [saloonId], references: [id])
   saloonId Int
+  saloon   Saloon @relation(fields: [saloonId], references: [id])
 
   bookings BookingSeat[]
 }
 
 model Booking {
-  id     Int @id @default(autoincrement())
-  userId Int
-
-  showTime   ShowTime @relation(fields: [showTimeId], references: [id])
+  id         Int @id @default(autoincrement())
+  userId     Int
   showTimeId Int
 
-  seats BookingSeat[]
+  showTime ShowTime @relation(fields: [showTimeId], references: [id])
 
-  createdAt DateTime @default(now())
+  movieId Int
+  movie   Movie @relation(fields: [movieId], references: [id])
+
+  createdAt    DateTime      @default(now())
+  bookingSeats BookingSeat[]
 }
 
-// Join table for Booking and Seat
 model BookingSeat {
   id Int @id @default(autoincrement())
 
-  booking   Booking @relation(fields: [bookingId], references: [id])
   bookingId Int
+  booking   Booking @relation(fields: [bookingId], references: [id])
 
-  seat   Seat @relation(fields: [seatId], references: [id])
   seatId Int
+  seat   Seat @relation(fields: [seatId], references: [id])
+
+  @@unique([bookingId, seatId])
 }
