@@ -8,13 +8,75 @@ datasource db {
 }
 
 model Movie {
-  id               String @id @default(cuid())
-  title            String
-  description      String
-  director         String
-  genre            String
-  rate             String
-  background_image String
-  actor_image      String
-  card_image       String
+  id          Int    @id @default(autoincrement())
+  name        String
+  description String
+  director    String
+  genre       String
+  thumbnail   String
+  coverPhoto  String
+
+  showTimes ShowTime[]
+  Booking   Booking[]
+}
+
+model Saloon {
+  id      Int    @id @default(autoincrement())
+  name    String
+  rows    Int
+  columns Int
+
+  seats     Seat[]
+  showTimes ShowTime[]
+}
+
+model ShowTime {
+  id   Int    @id @default(autoincrement())
+  time String
+
+  movieId Int
+  movie   Movie @relation(fields: [movieId], references: [id])
+
+  saloonId Int
+  saloon   Saloon @relation(fields: [saloonId], references: [id])
+
+  bookings Booking[]
+}
+
+model Seat {
+  id     Int @id @default(autoincrement())
+  row    Int
+  column Int
+  price  Int
+
+  saloonId Int
+  saloon   Saloon @relation(fields: [saloonId], references: [id])
+
+  bookings BookingSeat[]
+}
+
+model Booking {
+  id         Int @id @default(autoincrement())
+  userId     Int
+  showTimeId Int
+
+  showTime ShowTime @relation(fields: [showTimeId], references: [id])
+
+  movieId Int
+  movie   Movie @relation(fields: [movieId], references: [id])
+
+  createdAt    DateTime      @default(now())
+  bookingSeats BookingSeat[]
+}
+
+model BookingSeat {
+  id Int @id @default(autoincrement())
+
+  bookingId Int
+  booking   Booking @relation(fields: [bookingId], references: [id])
+
+  seatId Int
+  seat   Seat @relation(fields: [seatId], references: [id])
+
+  @@unique([bookingId, seatId])
 }
