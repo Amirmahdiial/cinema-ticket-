@@ -1,6 +1,7 @@
 export interface ISeat {
-  isReserved: boolean;
+  status: "available"|"taken"
+  id: number;
   price: number;
-  rowNumber: string;
-  colNumber: string;
+  row: number;
+  column: number;
 }

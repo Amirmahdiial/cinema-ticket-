@@ -4,13 +4,14 @@ import { useState } from "react";
 
 interface ISeatProps extends ISeat {
   addSeatToSelectedSeats: (seat: ISeat) => void;
-  removeSeatFromSelectedSeats: (colNumber: string, rowNumber: string) => void;
+  removeSeatFromSelectedSeats: (colNumber: number, rowNumber: number) => void;
 }
 
 const Seat = ({
-  colNumber,
-  rowNumber,
-  isReserved,
+  id,
+  column,
+  row,
+  status,
   price,
   removeSeatFromSelectedSeats,
   addSeatToSelectedSeats,
@@ -18,19 +19,19 @@ const Seat = ({
   const [isSelected, setIsSelected] = useState(false);
 
   function handleSeatClick() {
-    if (isReserved) return;
+    if (status === "taken") return;
 
     if (isSelected) {
       setIsSelected(false);
-      removeSeatFromSelectedSeats(colNumber, rowNumber);
+      removeSeatFromSelectedSeats(column, row);
     } else {
       setIsSelected(true);
-      addSeatToSelectedSeats({ isReserved, price, colNumber, rowNumber });
+      addSeatToSelectedSeats({ status, price, column, row, id });
     }
   }
 
   function getBackgroundColor() {
-    if (isReserved) return "#000";
+    if (status === "taken") return "#000";
     if (isSelected) return "#ff0000";
     return "#bcc7d6";
   }
@@ -45,7 +46,7 @@ const Seat = ({
         height: "40px",
         width: "40px",
         borderRadius: "100%",
-        cursor: `${isReserved ? "default" : "pointer"}`,
+        cursor: `${status === "taken" ? "default" : "pointer"}`,
       }}
     />
   );

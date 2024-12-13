@@ -5,23 +5,27 @@ async function main() {
   // Create Movies
   const movieA = await prisma.movie.create({
     data: {
-      name: "Movie A",
-      description: "Description for Movie A",
-      director: "Director A",
-      genre: "Action",
-      thumbnail: "thumbnail-a.jpg",
-      coverPhoto: "cover-a.jpg",
+      name: "باغ کیانوش",
+      description: "فیلم باغ کیانوش به کارگردانی رضا کشاورزحداد و تهیه‌کنندگی محمدجواد ...",
+      director: "رضا کشاورز",
+      genre: "ماجراجویی",
+      rating: "4.0",
+      thumbnail: "/Images/1/51e6de901eb9ec02e22e24f7f99c877d.webp",
+      coverPhoto: "/Images/1/e478466bd7526046868013a1f7d51eb6.webp",
+      actorPhoto: "/Images/1/f46a31eb308bacddd10a31795b8f7735.webp"
     },
   });
 
   const movieB = await prisma.movie.create({
     data: {
-      name: "Movie B",
-      description: "Description for Movie B",
-      director: "Director B",
-      genre: "Drama",
-      thumbnail: "thumbnail-b.jpg",
-      coverPhoto: "cover-b.jpg",
+      name: "صبحانه با زرافه ها",
+      description: "فیلم صبحانه با زرافه ها به کارگردانی سروش صحت ...",
+      director: "سروش صحت",
+      genre: "کمدی",
+      rating: "3.5",
+      thumbnail: "/Images/2/8530dc93a41d1fb4688e150e72bec750.webp",
+      coverPhoto: "/Images/2/0ddea1465973a57f9207a4035fa3ee1e.webp",
+      actorPhoto:"/Images/2/15646132ed93d9b320f45da374f9c9d0.webp"
     },
   });
 

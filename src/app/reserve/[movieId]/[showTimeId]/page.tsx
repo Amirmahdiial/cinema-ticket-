@@ -1,34 +1,83 @@
 "use client";
-
 import { Box, Container, Typography, CardMedia, Button } from "@mui/material";
-
+import React from "react";
+import { useParams } from "next/navigation";
+import { useEffect } from "react";
+import axios from "axios";
+import { ISeat } from "@/lib/types/types";
 import { useState } from "react";
 import Seat from "@/components/seat";
-import { ISeat } from "@/lib/types/types";
+import { Search } from "@mui/icons-material";
 
-export default function ticket() {
-  const [seats, setSeats] = useState<ISeat[]>([
-    { colNumber: "1", rowNumber: "1", price: 200, isReserved: false },
-    { colNumber: "2", rowNumber: "1", price: 200, isReserved: false },
-    { colNumber: "3", rowNumber: "1", price: 200, isReserved: true },
-    { colNumber: "4", rowNumber: "1", price: 200, isReserved: false },
-    { colNumber: "5", rowNumber: "1", price: 200, isReserved: true },
-    { colNumber: "6", rowNumber: "1", price: 200, isReserved: false },
-  ]);
+interface SeatsInfoResponse {
+  response: string;
+  data: ISeat[];
+}
+interface MovieInfoResponse {
+  response: string;
+  data: Movie;
+}
+interface Movie {
+  actorPhoto: string;
+  coverPhoto: string;
+  description: string;
+  director: string;
+  genre: string;
+  id: number;
+  name: string;
+  rating: string;
+  thumbnail: string;
+}
+function page() {
+  const params = useParams<{ movieId: string; showTimeId: string }>();
 
+  const [seats, setSeats] = useState<ISeat[]>([]);
   const [selectedSeats, setSelectedSeats] = useState<ISeat[]>([]);
+  const [movie, setMovie] = useState<Movie>();
+
+  const submitSeats = async () => {
+    if (!movie || !params.showTimeId) {
+      console.log("اطلاعات کافی برای ارسال درخواست وجود ندارد.");
+      return;
+    }
+    const selectedSeatIds = selectedSeats.map((seat) => seat.id);
+    const response = await axios.post("/api/book-seat", {
+      userId: 1,
+      movieId: movie?.id,
+      showTimeId: Number(params.showTimeId),
+      seats: selectedSeatIds,
+    });
+    location.reload();
+  };
 
   function addSeatToSelectedSeats(seat: ISeat) {
     setSelectedSeats([...selectedSeats, seat]);
   }
 
-  function removeSeatFromSelectedSeats(colNumber: string, rowNumber: string) {
+  function removeSeatFromSelectedSeats(colNumber: number, rowNumber: number) {
     setSelectedSeats(
       selectedSeats.filter((s) => {
-        return s.colNumber !== colNumber || s.rowNumber !== rowNumber;
-      }),
+        return s.column !== colNumber || s.row !== rowNumber;
+      })
     );
   }
+
+  useEffect(() => {
+    async function getMovieInfo() {
+      const res = await axios.get<MovieInfoResponse>(
+        `/api/movie/${params.movieId}/`
+      );
+      setMovie(res.data.data);
+    }
+    async function getSeatInfo() {
+      const res = await axios.get<ISeat[]>(
+        `/api/seat?movieId=${params.movieId}&showTimeId=${params.showTimeId}`
+      );
+      setSeats(res.data);
+    }
+    getSeatInfo();
+    getMovieInfo();
+  }, []);
 
   return (
     <>
@@ -98,7 +147,7 @@ export default function ticket() {
       >
         <Box
           maxWidth="lg"
-          sx={{ margin: "auto", height: "100vh", textAlign: "center" }}
+          sx={{ margin: "auto", height: "150vh", textAlign: "center" }}
         >
           <Box
             sx={{
@@ -114,12 +163,14 @@ export default function ticket() {
                 padding: "5px",
                 border: "1px solid white",
                 borderRadius: "10px",
+                color: "white",
               }}
             >
-              صحنه اجرا
+              صحنه
             </Typography>
             <Box
               sx={{
+                paddingTop: "10px",
                 display: "grid",
                 gridTemplateColumns: "repeat(12, 1fr)",
                 gap: "20px",
@@ -128,10 +179,11 @@ export default function ticket() {
             >
               {seats.map((seat) => (
                 <Seat
-                  isReserved={seat.isReserved}
+                  id={seat.id}
+                  status={seat.status}
                   price={seat.price}
-                  rowNumber={seat.rowNumber}
-                  colNumber={seat.colNumber}
+                  row={seat.row}
+                  column={seat.column}
                   addSeatToSelectedSeats={addSeatToSelectedSeats}
                   removeSeatFromSelectedSeats={removeSeatFromSelectedSeats}
                 />
@@ -159,7 +211,7 @@ export default function ticket() {
               color: "white",
             }}
           >
-            ظرفیت سالن:100
+            ظرفیت سالن:{seats.length}
           </Typography>
           <Box
             sx={{ display: "flex", alignItems: "center", marginRight: "100px" }}
@@ -241,14 +293,21 @@ export default function ticket() {
               margin: "40px",
               fontSize: "18px",
             }}
+            onClick={submitSeats}
           >
             ثبت صندلی
           </Button>
-          <Box sx={{ display: "flex", alignItems: "center", gap: "20px" }}>
+          <Box sx={{ display: "flex", alignItems: "center", justifyContent:"flex-start", gap: "20px", flexWrap:"wrap" }}>
             {selectedSeats.map((sSeat) => (
-              <span>
-                {sSeat.colNumber} | {sSeat.rowNumber} | {sSeat.price}
-              </span>
+              <Box sx={{ backgroundColor:"#4d4e5b", padding:"10px", borderRadius:"10px"}}>
+                <Box sx={{display:"flex", alignItems:"center", justifyContent:"space-between"}}>
+                صندلی:{sSeat.column} . ردیف:{sSeat.row}
+                </Box>
+                <Box sx={{textAlign:"center"}}>
+                قیمت:{sSeat.price}
+                </Box>
+              </Box>
+              
             ))}
           </Box>
           <Box
@@ -267,7 +326,7 @@ export default function ticket() {
                 paddingLeft: "20px",
               }}
             >
-              باغ کیانوش
+              {movie?.name}
             </Typography>
             <CardMedia
               sx={{
@@ -277,7 +336,7 @@ export default function ticket() {
                 paddingRight: "50px",
               }}
               component="img"
-              image="/Images/1/51e6de901eb9ec02e22e24f7f99c877d.webp"
+              image={movie?.thumbnail}
             />
           </Box>
         </Box>
@@ -285,3 +344,5 @@ export default function ticket() {
     </>
   );
 }
+
+export default page;

@@ -12,10 +12,11 @@ model Movie {
   name        String
   description String
   director    String
+  rating      String
   genre       String
   thumbnail   String
   coverPhoto  String
-
+  actorPhoto  String
   showTimes ShowTime[]
   Booking   Booking[]
 }

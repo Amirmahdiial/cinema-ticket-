@@ -40,7 +40,7 @@ const Cards: FC<Ownprops> = (data) => {
             position: "relative",
             backgroundColor: "rgba(0,0,0,0.5)",
           }}
-          image={data.data.background_image}
+          image={data.data.coverPhoto}
           alt="Live from space album cover"
         />
         <Box
@@ -54,7 +54,7 @@ const Cards: FC<Ownprops> = (data) => {
         <CardMedia
           component="img"
           sx={{ width: "24%", marginLeft: "20px", position: "absolute" }}
-          image={data.data.actor_image}
+          image={data.data.actorPhoto}
           alt="Live from space album cover"
         />
         <CardMedia
@@ -68,7 +68,7 @@ const Cards: FC<Ownprops> = (data) => {
             top: "5%",
             borderRadius: "20px",
           }}
-          image={data.data.card_image}
+          image={data.data.thumbnail}
           alt="Live from space album cover"
         />
         <Box
@@ -90,7 +90,7 @@ const Cards: FC<Ownprops> = (data) => {
               right: "0px",
             }}
           >
-            {data.data.title }
+            {data.data.name}
           </Typography>
           <Typography
             component="div"
@@ -121,7 +121,7 @@ const Cards: FC<Ownprops> = (data) => {
               padding: "5px",
             }}
           >
-            {data.data.rate} <FavoriteIcon sx={{ scale: ".8" }} />
+            {data.data.rating} <FavoriteIcon sx={{ scale: ".8" }} />
           </Typography>
           <Typography
             component="div"
@@ -150,9 +150,9 @@ const Cards: FC<Ownprops> = (data) => {
               fontSize: "18px",
             }}
           >
-            {data.data.desc}
+            {data.data.description}
           </Typography>
-          <Link href={`/Movies/${data.data.id}`}>
+          <Link href={`/reserve/${data.data.id}/${data.data.showTimes[0].id}`}>
           <Button variant="contained" size="medium" sx={{position:"absolute", right:"0", top:"220px", backgroundColor:"white", color:"black", fontSize:"20px"}}>
           خرید بلیت
         </Button>

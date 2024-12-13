@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 export default function CardList() {
   const[Movies , setMovies] = useState([]);
   const getMovies = async() => {
-    axios.get('/api')
+    axios.get('/api/movie')
     .then(function (response) {
       // handle success
       if(response.data.data){
